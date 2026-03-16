@@ -1,0 +1,34 @@
+services:
+  bootstrap:
+    image: ubuntu:24.04
+    init: true
+    working_dir: /workspace/aosp16
+    environment:
+      DEBIAN_FRONTEND: noninteractive
+    entrypoint:
+      - /bin/bash
+      - -lc
+    command:
+      - |
+        set -e
+        echo "==> Installing bootstrap packages"
+        apt-get update
+        apt-get install -y --no-install-recommends ca-certificates git openssh-client python3 repo
+        rm -rf /var/lib/apt/lists/*
+        echo "==> Configuring git identity"
+        git config --global user.name "Env Recipes"
+        git config --global user.email "env-recipes@local"
+        echo "==> Running repo init"
+        repo init \
+          --verbose \
+          -u https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest \
+          -b android-16.0.0_r4 \
+          --repo-url=https://mirrors.tuna.tsinghua.edu.cn/git/git-repo
+        echo "==> Running repo sync"
+        repo sync --verbose -c --no-clone-bundle --no-tags -j4
+    volumes:
+      - work:/workspace/aosp16
+
+volumes:
+  work:
+    name: aosp-work

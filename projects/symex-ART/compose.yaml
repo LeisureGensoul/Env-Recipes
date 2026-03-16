@@ -1,0 +1,30 @@
+services:
+  dev:
+    build:
+      context: .
+    image: symex-art-dev
+    init: true
+    stdin_open: true
+    tty: true
+    working_dir: /workspace/work_SE
+    command:
+      - bash
+      - -lc
+      - |
+        if [ ! -d /workspace/work_SE/.git ]; then
+          echo "Warning: work_SE is not prepared yet. Run '.\\win-env.ps1 symex-ART init' or 'bash ./linux-env.sh symex-ART init' if you want to use this environment."
+        fi
+        if [ ! -d /workspace/aosp16/.repo/manifests.git ]; then
+          echo "Warning: /workspace/aosp16 is optional. AOSP is not prepared yet, so ART/AOSP-related work will be unavailable."
+          echo "         If needed, run '.\\win-env.ps1 aosp init' or 'bash ./linux-env.sh aosp init' later."
+        fi
+        exec bash
+    volumes:
+      - work:/workspace/work_SE
+      - aosp:/workspace/aosp16
+
+volumes:
+  work:
+    name: symex-art-work
+  aosp:
+    name: aosp-work

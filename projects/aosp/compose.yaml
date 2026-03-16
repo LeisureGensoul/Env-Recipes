@@ -1,0 +1,31 @@
+services:
+  dev:
+    build:
+      context: .
+    image: env-recipes-aosp
+    init: true
+    stdin_open: true
+    tty: true
+    working_dir: /workspace/aosp16
+    command:
+      - bash
+      - -lc
+      - |
+        if [ ! -d /workspace/aosp16/.repo/manifests.git ]; then
+          echo "AOSP is not prepared yet. Run '.\\win-env.ps1 aosp init' or 'bash ./linux-env.sh aosp init' first."
+        fi
+        exec bash
+    environment:
+      OUT_DIR: /workspace/aosp16/out
+    volumes:
+      - work:/workspace/aosp16
+      - out:/workspace/aosp16/out
+      - ccache:/root/.ccache
+
+volumes:
+  work:
+    name: aosp-work
+  out:
+    name: aosp-out
+  ccache:
+    name: aosp-ccache
