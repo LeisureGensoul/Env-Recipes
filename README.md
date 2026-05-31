@@ -14,6 +14,9 @@ Env-Recipes/
     aosp/
       Dockerfile
       compose.yaml
+    exploration/
+      Dockerfile
+      compose.yaml
     graal/
       Dockerfile
       compose.yaml
@@ -33,6 +36,7 @@ Env-Recipes/
 - Docker volume names are fixed short names such as `symex-art-work`, `llvm-build`, and `graal-art`.
 - A project may mount multiple volumes. The source checkout is only one of them; build/cache volumes still stay in `projects/<project>/compose.yaml`.
 - `aosp init` uses Tsinghua's AOSP mirror plus mirrored `git-repo`, syncs the `android-16.0.0_r1` manifest, and mounts it at `/workspace/aosp16`.
+- `exploration` is a general Ubuntu 24.04 workspace with baseline development tools, Codex CLI support, and a persistent workspace volume.
 - `symex-ART init` clones `LeisureGensoul/work_SE` and mounts it at `/workspace/work_SE`.
 - `llvm init` clones `LeisureGensoul/llvm-project` into `/workspace/llvm-project`.
 
@@ -45,6 +49,7 @@ Windows / PowerShell:
 .\win-env.ps1 symex-ART
 .\win-env.ps1 llvm init
 .\win-env.ps1 llvm
+.\win-env.ps1 exploration
 .\win-env.ps1 aosp init
 .\win-env.ps1 aosp
 .\win-env.ps1 symex-ART shell
@@ -59,6 +64,7 @@ bash ./linux-env.sh symex-ART init
 bash ./linux-env.sh symex-ART
 bash ./linux-env.sh llvm init
 bash ./linux-env.sh llvm
+bash ./linux-env.sh exploration
 bash ./linux-env.sh aosp init
 bash ./linux-env.sh aosp
 bash ./linux-env.sh symex-ART shell
